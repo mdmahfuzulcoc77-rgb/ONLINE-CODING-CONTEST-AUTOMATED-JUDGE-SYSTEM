@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="text-align: center;">🏆 Contest Leaderboard 🏆</h2>
+
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; text-align: center;">
+    <thead style="background-color: #333; color: white;">
+        <tr>
+            <th>Rank</th>
+            <th>Student Name</th>
+            <th>Problems Solved</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in leaders %}
+        <tr>
+            <td>#{{ forloop.counter }}</td>
+            <td style="font-weight: bold;">{{ student.username }}</td>
+            <td>
+                <span style="background: green; color: white; padding: 5px 10px; border-radius: 10px;">
+                    {{ student.solved }} Solved
+                </span>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No one has solved any problems yet!</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'home' %}">Back to Problems</a>
+</div>
+{% endblock %}

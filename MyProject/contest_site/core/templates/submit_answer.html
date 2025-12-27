@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Problem: {{ question.title }}</h2>
+    <div id="question-timer" style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px; font-weight: bold;">
+        Time Left: <span id="q-countdown">Calculating...</span>
+    </div>
+</div>
+
+<div style="background: #eee; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+    <strong>Time Limit:</strong> {{ question.time_limit_minutes }} Minutes <br>
+    <strong>Description:</strong><br>
+    {{ question.description|linebreaks }}
+</div>
+
+<h3>Submit Your Solution</h3>
+<form method="post">
+    {% csrf_token %}
+    <label>Paste your code below:</label><br>
+    <textarea name="answer" rows="10" style="width:100%;" placeholder="# Write your python code here..."></textarea>
+    <br><br>
+    <button type="submit">Submit Solution</button>
+</form>
+<br>
+<a href="{% url 'home' %}">Back to Problem List</a>
+
+<script>
+    var deadlineStr = "{{ deadline }}";
+    var countDownDate = new Date(deadlineStr).getTime();
+
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("q-countdown").innerHTML = minutes + "m " + seconds + "s ";
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("question-timer").innerHTML = "TIME UP!";
+            document.querySelector("button[type='submit']").style.display = "none";
+            alert("Time is over for this question!");
+            window.location.href = "{% url 'home' %}";
+        }
+    }, 1000);
+</script>
+{% endblock %}

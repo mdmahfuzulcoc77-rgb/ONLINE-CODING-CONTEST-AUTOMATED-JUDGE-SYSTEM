@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Problem Set</h2>
+{% if questions %}
+    <ul>
+    {% for q in questions %}
+        <li style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #ddd;">
+            <strong>{{ q.title }}</strong>
+            {% if q.id in my_submissions %}
+                <span class="badge">Solved/Submitted</span>
+            {% endif %}
+            <br>
+            <a href="{% url 'submit_answer' q.id %}">View Problem & Submit Code</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No questions added by Admin yet.</p>
+{% endif %}
+{% endblock %}
